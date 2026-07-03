@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 1. 定义表单视图 (Form View) -->
+    <record id="view_library_book_form" model="ir.ui.view">
+        <field name="name">library.book.form</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="author"/>
+                        <field name="published_year"/>
+                        <field name="is_available"/>
+                        <field name="publisher_id"/>
+                        <field name="borrow_count"/>
+                    </group>
+                    <!-- 添加一个按钮来触发业务逻辑 -->
+                    <footer>
+                        <button name="action_mark_borrowed" string="Mark as Borrowed" type="object" class="btn-primary"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- 2. 定义列表/树形视图 (Tree View) -->
+    <record id="view_library_book_tree" model="ir.ui.view">
+        <field name="name">library.book.tree</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="author"/>
+                <field name="is_available"/>
+                <field name="borrow_count" sum="Total"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- 3. 定义窗口动作 (Window Action)，点击菜单时触发 -->
+    <record id="action_library_book" model="ir.actions.act_window">
+        <field name="name">Library Books</field>
+        <field name="res_model">library.book</field>
+        <field name="view_mode">list,form</field>  <!-- 默认显示列表和表单视图 -->
+    </record>
+
+    <!-- 4. 定义菜单 (Menu Item) -->
+    <menuitem id="menu_library_root" name="Library" sequence="10"/>
+    <menuitem id="menu_library_book" name="Books" parent="menu_library_root" action="action_library_book" sequence="20"/>
+</odoo>
