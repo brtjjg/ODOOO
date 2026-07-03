@@ -1,0 +1,2 @@
+# 将 my_module 替换为你的模块名
+./odoo-bin scaffold my_module ~/src/odoo-addons/
