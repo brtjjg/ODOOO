@@ -1,0 +1,21 @@
+{
+    'name': 'My Library',
+    'version': '1.0',
+    'category': 'Education',
+    'summary': 'A simple library management module',
+    'description': """
+        This module helps manage books in a library.
+    """,
+    'author': 'Your Name',
+    'website': 'https://www.yourwebsite.com',
+    'depends': ['base'],  # 依赖的核心模块
+    'data': [
+        'security/ir.model.access.csv',  # 安全访问控制文件
+        'views/views.xml',               # 视图文件
+    ],
+    'demo': [
+        'data/demo.xml',                 # 演示数据
+    ],
+    'installable': True,
+    'application': True,
+}
