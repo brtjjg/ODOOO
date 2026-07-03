@@ -1,0 +1,33 @@
+from odoo import models, fields, api
+
+class LibraryBook(models.Model):
+    _name = 'library.book'          # 模型的唯一标识符，数据库表名为 library_book[reference:10]
+    _description = 'Library Book'   # 模型的友好描述[reference:11]
+    _order = 'name'                 # 默认排序字段
+
+    # ---------- 基础字段 ----------
+    name = fields.Char(string='Book Name', required=True)  # 书名[reference:12]
+    author = fields.Char(string='Author')                  # 作者[reference:13]
+    published_year = fields.Integer(string='Published Year') # 出版年份[reference:14]
+    is_available = fields.Boolean(string='Available', default=True) # 是否可借[reference:15]
+
+    # ---------- 关联字段 ----------
+    # 多对一 (many2one): 多本书可以属于一个出版社
+    publisher_id = fields.Many2one('res.partner', string='Publisher')
+
+    # 一对多 (one2many): 一本书可以有多个借阅记录
+    # 'library.borrow' 是关联模型，'book_id' 是关联模型中的外键字段
+    borrow_ids = fields.One2many('library.borrow', 'book_id', string='Borrow History')
+
+    # ---------- 计算字段 ----------
+    borrow_count = fields.Integer(string='Borrow Count', compute='_compute_borrow_count')
+
+    @api.depends('borrow_ids')
+    def _compute_borrow_count(self):
+        for record in self:
+            record.borrow_count = len(record.borrow_ids)
+
+    # ---------- 业务逻辑方法 ----------
+    def action_mark_borrowed(self):
+        """标记图书为已借出"""
+        self.is_available = False
